@@ -49,7 +49,7 @@ volumes between user's space and the container.
 * No information about the user running the container :
 
 ```bash
-$ docker run -it --rm dgricci/jessie /bin/bash
+$ docker run -it --rm dgricci/alpine /bin/sh
 / # whoami
 root
 / # exit
@@ -58,7 +58,7 @@ root
 * Just give the user's id (same as the current) :
 
 ```bash
-$ docker run -it --rm -e USER_ID=`id -u` dgricci/jessie /bin/bash
+$ docker run -it --rm -e USER_ID=`id -u` dgricci/alpine /bin/sh
 / $ whoami
 xuser
 / $ tail -1 /etc/group
@@ -71,7 +71,7 @@ xuser:x:1000:1000:Linux User,,,:/home/xuser:/bin/sh
 * Let's add the group's id :
 
 ```bash
-$ docker run -it --rm -e USER_ID=`id -u` -e USER_GP=2000 dgricci/jessie /bin/bash
+$ docker run -it --rm -e USER_ID=`id -u` -e USER_GP=2000 dgricci/alpine /bin/sh
 / $ whoami
 xuser
 / $ tail -1 /etc/group
@@ -84,7 +84,7 @@ xuser:x:1000:2000:Linux User,,,:/home/xuser:/bin/sh
 * Then we add the user's name :
 
 ```bash
-$ docker run -it --rm -e USER_ID=`id -u` -e USER_GP=2000 -e USER_NAME=dgricci dgricci/jessie /bin/bash
+$ docker run -it --rm -e USER_ID=`id -u` -e USER_GP=2000 -e USER_NAME=dgricci dgricci/alpine /bin/sh
 / $ whoami
 dgricci
 / $ tail -1 /etc/group
@@ -96,8 +96,8 @@ dgricci:x:1000:2000:Linux User,,,:/home/xuser:/bin/sh
 
 * And finally, let's use the debug option :
 
-```bash
-$ docker run -it --rm -e USER_DEBUG=1 -e USER_ID=$UID -e USER_GP=`id -g` -e USER_NAME=$USER dgricci/jessie /bin/bash
+```sh
+$ docker run -it --rm -e USER_DEBUG=1 -e USER_ID=$UID -e USER_GP=`id -g` -e USER_NAME=$USER dgricci/alpine /bin/sh
 Starting container as 'ricci' (1000:1000)
 / $ whoami
 ricci
@@ -113,5 +113,5 @@ __Et voilà !__
 
 _fin du document[^pandoc_gen]_
 
-[^pandoc_gen]: document généré via $ `pandoc -V fontsize=10pt -V geometry:"top=2cm, bottom=2cm, left=1cm, right=1cm" -s -N --toc -o base-jessie.pdf README.md`{.bash}
+[^pandoc_gen]: document généré via $ `pandoc -V fontsize=10pt -V geometry:"top=2cm, bottom=2cm, left=1cm, right=1cm" -s -N --toc -o base-alpine.pdf README.md`{.bash}
 
