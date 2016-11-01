@@ -1,6 +1,8 @@
 % Image de base pour alpine 3.4.4
 % Didier Richard
 % rév. 0.0.1 du 22/10/2016
+% rév. 0.0.2 du 27/10/2016
+% rév. 0.1.0 du 01/11/2016
 
 ---
 
@@ -46,66 +48,29 @@ volumes between user's space and the container.
 
 ## Tests ##
 
-* No information about the user running the container :
+Just launch `base-jessie.bats` (once `bats`[^bats] is installed on your system) :
 
 ```bash
-$ docker run -it --rm dgricci/alpine /bin/sh
-/ # whoami
-root
-/ # exit
+$ ./base-jessie.bats
+ ✓ no information about the user running the container
+ ✓ give the identifier of the current user
+ ✓ add a group id of 2000
+ ✓ add dgricci as user name
+ ✓ then activate debug option
+
+5 tests, 0 failures
 ```
 
-* Just give the user's id (same as the current) :
+or, better, using the TAP formatting :
 
 ```bash
-$ docker run -it --rm -e USER_ID=`id -u` dgricci/alpine /bin/sh
-/ $ whoami
-xuser
-/ $ tail -1 /etc/group
-xuser:x:1000:
-/ $ tail -1 /etc/passwd
-xuser:x:1000:1000:Linux User,,,:/home/xuser:/bin/sh
-/ $ exit
-```
-
-* Let's add the group's id :
-
-```bash
-$ docker run -it --rm -e USER_ID=`id -u` -e USER_GP=2000 dgricci/alpine /bin/sh
-/ $ whoami
-xuser
-/ $ tail -1 /etc/group
-xuser:x:2000:xuser
-/ $ tail -1 /etc/passwd
-xuser:x:1000:2000:Linux User,,,:/home/xuser:/bin/sh
-/ $ exit
-```
-
-* Then we add the user's name :
-
-```bash
-$ docker run -it --rm -e USER_ID=`id -u` -e USER_GP=2000 -e USER_NAME=dgricci dgricci/alpine /bin/sh
-/ $ whoami
-dgricci
-/ $ tail -1 /etc/group
-dgricci:x:2000:dgricci
-/ $ tail -1 /etc/passwd
-dgricci:x:1000:2000:Linux User,,,:/home/xuser:/bin/sh
-/ $ exit
-```
-
-* And finally, let's use the debug option :
-
-```sh
-$ docker run -it --rm -e USER_DEBUG=1 -e USER_ID=$UID -e USER_GP=`id -g` -e USER_NAME=$USER dgricci/alpine /bin/sh
-Starting container as 'ricci' (1000:1000)
-/ $ whoami
-ricci
-/ $ tail -1 /etc/group
-ricci:x:1000:
-/ $ tail -1 /etc/passwd
-ricci:x:1000:1000:Linux User,,,:/home/ricci:/bin/sh
-/ $ exit
+$ ./base-jessie.bats --tap
+1..5
+ok 1 no information about the user running the container
+ok 2 give the identifier of the current user
+ok 3 add a group id of 2000
+ok 4 add dgricci as user name
+ok 5 then activate debug option
 ```
 
 __Et voilà !__
@@ -113,5 +78,6 @@ __Et voilà !__
 
 _fin du document[^pandoc_gen]_
 
+[^bats]: https://github.com/sstephenson/bats
 [^pandoc_gen]: document généré via $ `pandoc -V fontsize=10pt -V geometry:"top=2cm, bottom=2cm, left=1cm, right=1cm" -s -N --toc -o base-alpine.pdf README.md`{.bash}
 
