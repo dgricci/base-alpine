@@ -17,7 +17,7 @@ if [ -n "$USER_ID" ] ; then
         addgroup -g $userGp $userName
     }
     # identity to handle permissions with docker's volumes :
-    adduser -s /bin/sh -u $userId $gOption -D $userName
+    adduser -s /bin/sh -u $userId $gOption -g "identity to handle permissions with docker's volumes" -D $userName
     export HOME="/home/$userName"
     # we suppose gosu is in the PATH ...
     exec gosu "$userName" "$@"
