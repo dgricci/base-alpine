@@ -8,7 +8,8 @@ ARG GOSU_DOWNLOAD_URL
 ENV GOSU_DOWNLOAD_URL ${GOSU_DOWNLOAD_URL:-https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64}
 
 RUN \
-    apk update && \
+    apk update \
+    && \
     apk add --update \
         ca-certificates \
         curl \
@@ -23,7 +24,9 @@ RUN \
     curl -fsSL "${GOSU_DOWNLOAD_URL}.asc" -o /usr/bin/gosu.asc && \
     gpg --verify /usr/bin/gosu.asc && \
     rm -f /usr/bin/gosu.asc && \
-    chmod +x /usr/bin/gosu
+    chmod +x /usr/bin/gosu && \
+    # See https://stackoverflow.com/questions/34729748/installed-go-binary-not-found-in-path-on-alpine-linux-docker
+    mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 # Cf. https://github.com/docker-library/golang/blob/master/1.6/wheezy/Dockerfile
 COPY adduserifneeded.sh /usr/local/bin/adduserifneeded.sh
