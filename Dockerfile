@@ -20,6 +20,9 @@ RUN \
         git \
         openssh-client \
         gnupg \
+        zip \
+        unzip \
+        coreutils \
     && \
     rm -rf /var/cache/apk/* && \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
