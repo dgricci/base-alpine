@@ -7,6 +7,9 @@ ENV GOSU_VERSION ${GOSU_VERSION:-1.10}
 ARG GOSU_DOWNLOAD_URL
 ENV GOSU_DOWNLOAD_URL ${GOSU_DOWNLOAD_URL:-https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64}
 
+# Default to UTF-8 file.encoding
+ENV LANG C.UTF-8
+
 RUN \
     apk update \
     && \
